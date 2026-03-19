@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_argument("doc_file", nargs="?", help="Path to a .docx or .pdf syllabus file")
     parser.add_argument(
         "--backend",
-        choices=["ollama", "bedrock"],
+        choices=["ollama", "bedrock", "openai"],
         default="ollama",
         help="LLM backend to use (default: ollama)",
     )

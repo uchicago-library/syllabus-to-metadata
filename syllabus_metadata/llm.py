@@ -3,12 +3,14 @@ import os
 import urllib.request
 
 import boto3
+import openai
 
 BEDROCK_DEFAULT_REGION = "us-east-1"
 
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3.1:latest"
 BEDROCK_MODEL = "us.anthropic.claude-sonnet-4-6"
+OPENAI_MODEL = "gpt-4o"
 
 
 def _call_ollama(prompt: str) -> str:
@@ -34,9 +36,22 @@ def _call_bedrock(prompt: str) -> str:
     return result["content"][0]["text"]
 
 
+def _call_openai(prompt: str) -> str:
+    # OPENAI_API_KEY is read automatically from the environment
+    client = openai.OpenAI()
+    response = client.chat.completions.create(
+        model=OPENAI_MODEL,
+        max_tokens=4096,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.choices[0].message.content
+
+
 def _dispatch(prompt: str, backend: str) -> str:
     if backend == "bedrock":
         return _call_bedrock(prompt)
+    if backend == "openai":
+        return _call_openai(prompt)
     return _call_ollama(prompt)
 
 
@@ -45,7 +60,7 @@ def query_llm(prompt: str, backend: str = "ollama") -> str:
 
     Args:
         prompt: The prompt string to send to the LLM.
-        backend: Which LLM backend to use: "ollama" (default) or "bedrock".
+        backend: Which LLM backend to use: "ollama" (default), "bedrock", or "openai".
 
     Returns:
         The LLM's response as a string.
@@ -59,7 +74,7 @@ def extract_citations(prompt: str, doc_text: str, backend: str = "ollama") -> st
     Args:
         prompt: Instructions telling the LLM what to extract and how to format output.
         doc_text: The plain text of the syllabus document.
-        backend: Which LLM backend to use: "ollama" (default) or "bedrock".
+        backend: Which LLM backend to use: "ollama" (default), "bedrock", or "openai".
 
     Returns:
         TSV-formatted citation data as returned by the LLM.
