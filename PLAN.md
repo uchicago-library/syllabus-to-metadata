@@ -148,4 +148,8 @@ Extend stage 1 with a function that reads a prompt and a `.docx` file from disk,
 Extend stage 2 with the ability to also accept a `.pdf` file. The function detects the file type and extracts text accordingly, then proceeds identically to stage 2.
 
 ### Stage 4: Pluggable LLM backend
-Refactor the LLM call behind an abstraction so the backend is configurable. Add support for a second backend (e.g. Llama 3 via Ollama) alongside Claude. The prompt and document are still read from disk; the caller selects which backend to use.
+Refactor the LLM call behind an abstraction so the backend is configurable. The two supported backends are:
+- **Ollama** (default): Llama 3.1 running locally via Ollama (`llama3.1:latest`)
+- **Bedrock**: `anthropic.claude-sonnet-4-6` via the AWS Bedrock API
+
+The caller selects which backend to use via a parameter (e.g. `backend="ollama"` or `backend="bedrock"`). AWS credentials for Bedrock are read from the standard environment variables (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_DEFAULT_REGION`).
