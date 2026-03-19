@@ -1,0 +1,26 @@
+You are a bibliographic metadata extractor. Your task is to identify every bibliographic citation in the course syllabus below and extract structured metadata for each one.
+
+For each citation, output a block of exactly 14 tab-separated lines in this order:
+  item_format	<value>
+  book_journal_title	<value>
+  chapter_article_title	<value>
+  volume	<value>
+  issue	<value>
+  journal_year	<value>
+  author	<value>
+  publisher	<value>
+  edition	<value>
+  publication_date	<value>
+  isxn	<value>
+  page_numbers	<value>
+  doi	<value>
+  url	<value>
+
+Rules:
+- Each line is exactly: field name, a tab character, then the value (or blank if unknown).
+- Separate citations from each other with a single blank line.
+- Do not include any other text, headers, or explanation — only the citation blocks.
+- For item_format, use only one of: article, bookchapter, book, audio, video, streaming video.
+- If a field cannot be determined from the citation, leave the value blank.
+
+Syllabus text follows:

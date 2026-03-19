@@ -25,3 +25,16 @@ def query_llm(prompt: str) -> str:
         The LLM's response as a string.
     """
     return _call_ollama(prompt)
+
+
+def extract_citations(prompt: str, doc_text: str) -> str:
+    """Extract bibliographic citations from document text.
+
+    Args:
+        prompt: Instructions telling the LLM what to extract and how to format output.
+        doc_text: The plain text of the syllabus document.
+
+    Returns:
+        TSV-formatted citation data as returned by the LLM.
+    """
+    return _call_ollama(f"{prompt}\n\n{doc_text}")
