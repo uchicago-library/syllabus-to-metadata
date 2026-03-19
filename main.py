@@ -1,7 +1,7 @@
 import sys
 
 from syllabus_metadata import extract_citations, query_llm
-from syllabus_metadata.ingestion import extract_text_docx
+from syllabus_metadata.ingestion import extract_text
 
 
 def read_prompt(path: str) -> str:
@@ -13,7 +13,7 @@ if __name__ == "__main__":
     if len(sys.argv) == 3:
         # Citation extraction mode: prompt file + docx file
         prompt = read_prompt(sys.argv[1])
-        doc_text = extract_text_docx(sys.argv[2])
+        doc_text = extract_text(sys.argv[2])
         print(extract_citations(prompt, doc_text))
     else:
         # Simple query mode: prompt file only
