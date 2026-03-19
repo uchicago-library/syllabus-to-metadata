@@ -49,3 +49,6 @@ htmlcov/
 .idea/
 *.swp
 *.swo
+
+# prompt
+prompt.txt
