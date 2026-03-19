@@ -16,6 +16,22 @@ For each citation, output a block of exactly 14 tab-separated lines in this orde
   doi	<value>
   url	<value>
 
+Example output for a single citation:
+  item_format	article
+  book_journal_title	City
+  chapter_article_title	What is critical urban theory?
+  volume	13
+  issue	2-3
+  journal_year	2009
+  author	Brenner, N.
+  publisher
+  edition
+  publication_date	2009
+  isxn
+  page_numbers	198-207
+  doi
+  url
+
 Rules:
 - Each line is exactly: field name, a tab character, then the value (or blank if unknown).
 - Separate citations from each other with a single blank line.
