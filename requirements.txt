@@ -1,2 +1,3 @@
 python-docx
 pdfplumber
+boto3
