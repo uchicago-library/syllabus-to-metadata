@@ -36,8 +36,8 @@ from syllabus_metadata.ingestion import extract_text
 
 doc_text = extract_text("syllabus.pdf")  # also accepts .docx
 prompt = open("prompts/citations.txt").read()
-tsv = extract_citations(prompt, doc_text, backend="bedrock")
-print(tsv)
+output = extract_citations(prompt, doc_text, backend="bedrock")
+print(output)
 ```
 
 ## Background and System Requirements
