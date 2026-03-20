@@ -40,6 +40,37 @@ output = extract_citations(prompt, doc_text, backend="bedrock")
 print(output)
 ```
 
+## Installing from Source
+
+To install directly from a cloned repository:
+
+```bash
+# Ensure Python >= 3.10 is available (install via Homebrew if needed)
+brew install python@3.12
+
+# Create and activate a virtualenv
+python3.12 -m venv ~/.venvs/syllabus-metadata
+source ~/.venvs/syllabus-metadata/bin/activate
+
+# Install dependencies and the package in editable mode
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+```
+
+### AWS Bedrock credentials
+
+To use the `bedrock` backend, set the following environment variables before running the tool:
+
+```bash
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_DEFAULT_REGION=us-east-1   # optional; defaults to us-east-1
+```
+
+Your AWS account must also have access to Amazon Bedrock and the
+`us.anthropic.claude-sonnet-4-6` inference profile enabled in the target region.
+
 ## Background and System Requirements
 
 ### Python Build Requirements
