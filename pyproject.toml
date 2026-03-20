@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syllabus-metadata"
+version = "0.1.0"
+description = "Extract bibliographic citation metadata from course syllabi using an LLM"
+requires-python = ">=3.10"
+dependencies = [
+    "python-docx",
+    "pdfplumber",
+    "boto3",
+    "openai",
+]
+
+[tool.setuptools.packages.find]
+include = ["syllabus_metadata*"]
+
+[project.scripts]
+syllabus-metadata = "syllabus_metadata.cli:main"
