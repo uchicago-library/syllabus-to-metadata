@@ -37,7 +37,7 @@ def _call_bedrock(prompt: str) -> str:
 
 
 def _call_openai(prompt: str) -> str:
-    # OPENAI_API_KEY is read automatically from the environment
+    # this function expects the env variable OPENAI_API_KEY to be set
     client = openai.OpenAI()
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
