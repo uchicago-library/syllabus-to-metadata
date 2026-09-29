@@ -1,6 +1,6 @@
 # syllabus-to-metadata
 
-Python library that extracts bibliographic citation metadata from course syllabi (PDF or Word format) using Claude as the LLM backend.
+Python library that extracts bibliographic citation metadata from course syllabi (PDF or Word format) using OpenAI as the LLM backend.
 
 ## Project structure
 
@@ -9,7 +9,7 @@ syllabus_metadata/
 ├── __init__.py     # public API: extract_citations(), citations_to_tsv()
 ├── models.py       # Citation dataclass
 ├── ingestion.py    # file -> plain text (pdfplumber for PDF, python-docx for docx)
-├── llm.py          # Claude API call + JSON response -> list[Citation]
+├── llm.py          # OpenAI API call + JSON response -> list[Citation]
 └── output.py       # list[Citation] -> TSV string
 tests/
 requirements.txt
@@ -18,9 +18,9 @@ PLAN.md             # full design record and background
 
 ## Key design decisions
 
-- **LLM-powered extraction**: Claude (`claude-sonnet-4-6`) does citation identification and field extraction. This handles messy, non-standard citation formats that rule-based parsers can't.
-- **LLM returns JSON**: The prompt asks Claude for a JSON array of citation objects. We parse that internally and convert to TSV — do not ask the LLM to produce TSV directly.
-- **Abstraction-ready**: LLM logic is isolated in `llm.py` so the backend can be swapped later. Do not scatter Anthropic SDK calls across multiple files.
+- **LLM-powered extraction**: OpenAI (`gpt-4o`) does citation identification and field extraction. This handles messy, non-standard citation formats that rule-based parsers can't.
+- **LLM returns JSON**: The prompt asks the LLM for a JSON array of citation objects. We parse that internally and convert to TSV — do not ask the LLM to produce TSV directly.
+- **Abstraction-ready**: LLM logic is isolated in `llm.py` so the backend can be swapped later. Do not scatter OpenAI SDK calls across multiple files.
 - **Library, not app**: No CLI entrypoint yet. Keep all code importable.
 
 ## Citation fields
@@ -39,7 +39,7 @@ Fields in canonical order (used for TSV output):
 ## Dependencies
 
 ```
-anthropic
+openai
 pdfplumber
 python-docx
 ```
@@ -50,7 +50,7 @@ python-docx
 - **Prefer pure functions**: avoid side effects where possible; favor referentially transparent functions that map input data to output data, operating on immutable data structures
 - **Imperative style**: when required (e.g. for runtime complexity), keep definitions short and modular, and include one-line comments explaining the control flow
 - **Handrolled over third-party**: prefer handrolled solutions unless a library is needed because a handrolled solution would be too complex, too slow, or insecure
-- **Third-party libraries**: rely on them for document parsing (pdfplumber, python-docx), the LLM API (anthropic), and similarly irreplaceable integrations — not for logic that is straightforward to implement directly
+- **Third-party libraries**: rely on them for document parsing (pdfplumber, python-docx), the LLM API (openai), and similarly irreplaceable integrations — not for logic that is straightforward to implement directly
 - **Avoid OOP in application code**: prefer ordinary operations on dicts, tuples, lists, and other built-in data structures; prefer higher-order functions over classes and inheritance for abstraction
 - **OOP only when required**: adopt object-oriented style only when demanded by a third-party library or framework
 
@@ -63,4 +63,4 @@ python-docx
 
 ## Environment
 
-Requires `ANTHROPIC_API_KEY` to be set.
+Requires `OPENAI_API_KEY` to be set.
