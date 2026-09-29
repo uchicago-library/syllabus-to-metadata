@@ -36,9 +36,9 @@ def _call_bedrock(prompt: str) -> str:
     return result["content"][0]["text"]
 
 
-def _call_openai(prompt: str) -> str:
-    # this function expects the env variable OPENAI_API_KEY to be set
-    client = openai.OpenAI()
+def _call_openai(prompt: str, api_key: str | None = None) -> str:
+    # api_key=None falls back to the OPENAI_API_KEY env variable
+    client = openai.OpenAI(api_key=api_key)
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
         max_tokens=4096,
@@ -47,36 +47,42 @@ def _call_openai(prompt: str) -> str:
     return response.choices[0].message.content
 
 
-def _dispatch(prompt: str, backend: str) -> str:
+def _dispatch(prompt: str, backend: str, api_key: str | None = None) -> str:
     if backend == "bedrock":
         return _call_bedrock(prompt)
     if backend == "openai":
-        return _call_openai(prompt)
+        return _call_openai(prompt, api_key)
     return _call_ollama(prompt)
 
 
-def query_llm(prompt: str, backend: str = "ollama") -> str:
+def query_llm(prompt: str, backend: str = "openai", api_key: str | None = None) -> str:
     """Submit a prompt to the LLM and return the response.
 
     Args:
         prompt: The prompt string to send to the LLM.
-        backend: Which LLM backend to use: "ollama" (default), "bedrock", or "openai".
+        backend: Which LLM backend to use: "openai" (default), "bedrock", or "ollama".
+        api_key: API key for the "openai" backend. If omitted, falls back to
+            the OPENAI_API_KEY env variable. Ignored by other backends.
 
     Returns:
         The LLM's response as a string.
     """
-    return _dispatch(prompt, backend)
+    return _dispatch(prompt, backend, api_key)
 
 
-def extract_citations(prompt: str, doc_text: str, backend: str = "ollama") -> str:
+def extract_citations(
+    prompt: str, doc_text: str, backend: str = "openai", api_key: str | None = None
+) -> str:
     """Extract bibliographic citations from document text.
 
     Args:
         prompt: Instructions telling the LLM what to extract and how to format output.
         doc_text: The plain text of the syllabus document.
-        backend: Which LLM backend to use: "ollama" (default), "bedrock", or "openai".
+        backend: Which LLM backend to use: "openai" (default), "bedrock", or "ollama".
+        api_key: API key for the "openai" backend. If omitted, falls back to
+            the OPENAI_API_KEY env variable. Ignored by other backends.
 
     Returns:
         TSV-formatted citation data as returned by the LLM.
     """
-    return _dispatch(f"{prompt}\n\n{doc_text}", backend)
+    return _dispatch(f"{prompt}\n\n{doc_text}", backend, api_key)

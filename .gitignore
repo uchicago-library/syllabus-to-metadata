@@ -57,3 +57,7 @@ prompt.txt
 **/*.docx
 
 **/secrets.py
+
+**/.env
+
+**/.agent-shell/**

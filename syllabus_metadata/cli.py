@@ -16,8 +16,8 @@ def main():
     parser.add_argument(
         "--backend",
         choices=["ollama", "bedrock", "openai"],
-        default="ollama",
-        help="LLM backend to use (default: ollama)",
+        default="openai",
+        help="LLM backend to use (default: openai)",
     )
     args = parser.parse_args()
 
