@@ -12,6 +12,7 @@ dependencies = [
     "pdfplumber",
     "boto3",
     "openai",
+    "python-dotenv",
 ]
 
 [tool.setuptools.packages.find]
