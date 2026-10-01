@@ -1,9 +1,11 @@
 import json
 import os
 import urllib.request
+from pathlib import Path
 
 import boto3
 import openai
+from dotenv import load_dotenv
 
 BEDROCK_DEFAULT_REGION = "us-east-1"
 
@@ -12,6 +14,8 @@ OLLAMA_MODEL = "llama3.1:latest"
 BEDROCK_MODEL = "us.anthropic.claude-sonnet-4-6"
 OPENAI_MODEL = "gpt-4o"
 
+CONFIG_PATH = Path("~/.openai").expanduser()
+load_dotenv(dotenv_path=CONFIG_PATH)
 
 def _call_ollama(prompt: str) -> str:
     payload = json.dumps({"model": OLLAMA_MODEL, "prompt": prompt, "stream": False}).encode()
@@ -47,12 +51,22 @@ def _call_openai(prompt: str, api_key: str | None = None) -> str:
     return response.choices[0].message.content
 
 
+def _strip_code_fence(text: str) -> str:
+    stripped = text.strip()
+    if not (stripped.startswith("```") and stripped.endswith("```")):
+        return text
+    lines = stripped.split("\n")[1:-1]  # drop the fence lines themselves
+    return "\n".join(lines)
+
+
 def _dispatch(prompt: str, backend: str, api_key: str | None = None) -> str:
     if backend == "bedrock":
-        return _call_bedrock(prompt)
-    if backend == "openai":
-        return _call_openai(prompt, api_key)
-    return _call_ollama(prompt)
+        result = _call_bedrock(prompt)
+    elif backend == "openai":
+        result = _call_openai(prompt, api_key)
+    else:
+        result = _call_ollama(prompt)
+    return _strip_code_fence(result)
 
 
 def query_llm(prompt: str, backend: str = "openai", api_key: str | None = None) -> str:
