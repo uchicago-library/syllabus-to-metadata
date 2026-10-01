@@ -2,3 +2,4 @@ python-docx
 pdfplumber
 boto3
 openai
+python-dotenv
