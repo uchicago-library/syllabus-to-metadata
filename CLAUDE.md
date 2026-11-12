@@ -18,7 +18,7 @@ PLAN.md             # full design record and background
 
 ## Key design decisions
 
-- **LLM-powered extraction**: OpenAI (`gpt-4o`) does citation identification and field extraction. This handles messy, non-standard citation formats that rule-based parsers can't.
+- **LLM-powered extraction**: OpenAI (`gpt-6-luna`) does citation identification and field extraction. This handles messy, non-standard citation formats that rule-based parsers can't.
 - **LLM returns JSON**: The prompt asks the LLM for a JSON array of citation objects. We parse that internally and convert to TSV — do not ask the LLM to produce TSV directly.
 - **Abstraction-ready**: LLM logic is isolated in `llm.py` so the backend can be swapped later. Do not scatter OpenAI SDK calls across multiple files.
 - **Library, not app**: No CLI entrypoint yet. Keep all code importable.

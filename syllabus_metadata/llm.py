@@ -12,7 +12,7 @@ BEDROCK_DEFAULT_REGION = "us-east-1"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 OLLAMA_MODEL = "llama3.1:latest"
 BEDROCK_MODEL = "us.anthropic.claude-sonnet-4-6"
-OPENAI_MODEL = "gpt-4o"
+OPENAI_MODEL = "gpt-6-luna"
 
 CONFIG_PATH = Path("~/.openai").expanduser()
 load_dotenv(dotenv_path=CONFIG_PATH)
@@ -45,7 +45,7 @@ def _call_openai(prompt: str, api_key: str | None = None) -> str:
     client = openai.OpenAI(api_key=api_key)
     response = client.chat.completions.create(
         model=OPENAI_MODEL,
-        max_tokens=4096,
+        max_completion_tokens=4096,
         messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content
